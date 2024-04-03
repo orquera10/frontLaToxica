@@ -6,7 +6,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-//Dario Orquera
+//Dario Orquera mod
 function App() {
 
   //Traer Productos -----------------------------------
