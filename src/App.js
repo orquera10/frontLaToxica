@@ -2,7 +2,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid'
-// import moment from 'moment'; // Importa Moment.js
+import moment from 'moment'; // Importa Moment.js
 import React, { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
@@ -64,28 +64,18 @@ function App() {
   };
 
   const handleHoraEntradaChange = (event) => {
-    // Formatear la hora de entrada seleccionada
-    const selectedDate = new Date(event.target.value);
-    // Obtener componentes de fecha y hora
-    const year = selectedDate.getFullYear();
-    const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
-    const day = String(selectedDate.getDate()).padStart(2, '0');
-    const hours = String(selectedDate.getHours()).padStart(2, '0');
+    // Obtener la hora de entrada seleccionada
+    const selectedDateTime = moment(event.target.value);
     // Formatear en el formato requerido "yyyy-MM-ddThh:mm"
-    const formattedDateTime = `${year}-${month}-${day}T${hours}:00`;
+    const formattedDateTime = selectedDateTime.format('YYYY-MM-DDTHH:mm');
     setHoraEntrada(formattedDateTime);
   };
 
   const handleHoraSalidaChange = (event) => {
-    // Formatear la hora de salida seleccionada
-    const selectedDate = new Date(event.target.value);
-    // Obtener componentes de fecha y hora
-    const year = selectedDate.getFullYear();
-    const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // Los meses van de 0 a 11
-    const day = String(selectedDate.getDate()).padStart(2, '0');
-    const hours = String(selectedDate.getHours()).padStart(2, '0');
+    // Obtener la hora de salida seleccionada
+    const selectedDateTime = moment(event.target.value);
     // Formatear en el formato requerido "yyyy-MM-ddThh:mm"
-    const formattedDateTime = `${year}-${month}-${day}T${hours}:00`;
+    const formattedDateTime = selectedDateTime.format('YYYY-MM-DDTHH:mm');
     setHoraSalida(formattedDateTime);
   };
 
@@ -99,11 +89,11 @@ function App() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Aquí puedes enviar los datos del evento al backend utilizando fetch
+
     const nuevoEvento = {
       nombre_reserva: nombreReserva,
-      hora_entrada: horaEntrada,
-      hora_salida: horaSalida,
+      hora_entrada: horaEntrada + ':00.000Z',
+      hora_salida: horaSalida + ':00.000Z',
       cancha: cancha,
     };
 
@@ -135,12 +125,15 @@ function App() {
 
 
   const handleDateClick = (arg) => {
-
     setShowModal(true);
     setNombreReserva('');
-    const selectedDate = arg.dateStr + 'T15:00';
-    setHoraEntrada(selectedDate);
-    setHoraSalida(selectedDate);
+    // Obtener la fecha seleccionada y establecer la hora a las 15:00
+    const selectedDateTime = moment(arg.dateStr).set('hour', 15).set('minute', 0);
+    // Formatear en el formato requerido "yyyy-MM-ddThh:mm"
+    const formattedDateTime = selectedDateTime.format('YYYY-MM-DDTHH:mm');
+    // Establecer la hora de entrada y salida
+    setHoraEntrada(formattedDateTime);
+    setHoraSalida(formattedDateTime);
   };
 
   const handleCloseModal = () => {
@@ -185,10 +178,15 @@ function App() {
   console.log(events);
 
   // Función para formatear hora y minutos
-  const formatTime = (date) => {
+  const formatTime = (dateStr) => {
+    const date = new Date(dateStr);
+
+    // Sumar tres horas a la hora de la fecha
+    date.setHours(date.getHours() + 3);
+
     const hours = date.getHours().toString().padStart(2, '0'); // Obtener horas y asegurar que tenga dos dígitos
     const minutes = date.getMinutes().toString().padStart(2, '0'); // Obtener minutos y asegurar que tenga dos dígitos
-    return `${hours}:${minutes}`; // Formatear la hora y los minutos
+    return `${hours}:${minutes}`; // Formatear la hora y los minutos sumando tres horas
   };
 
   // Estado para almacenar el ID del evento a eliminar
@@ -241,6 +239,7 @@ function App() {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay' // user can switch between the two
           }}
+          timeZone="America/Argentina/Buenos_Aires" // Zona horaria de Chile
           eventContent={(arg, createElement) => {
             return (
               <div style={{
@@ -249,7 +248,7 @@ function App() {
                 borderRadius: '10px', // Bordes redondeados
                 padding: '5px', // Espacio interno
               }}>
-                <span>{new Date(arg.event.start).toLocaleTimeString('es-ES', {timeZone: 'UTC'}).substring(0, 5)}</span>
+                <span>{new Date(arg.event.start).toLocaleTimeString('es-ES', { timeZone: 'UTC' }).substring(0, 5)}</span>
                 <span className='px-2'>{arg.event.title}</span>
                 <FontAwesomeIcon icon={faTrashAlt} onClick={(event) => {
                   event.stopPropagation(); // Evitar propagación del evento
@@ -343,7 +342,7 @@ function App() {
                     {/* Renderizar los productos del detalle del turno */}
                     {selectedEvent.extendedProps.detalle.productos_consumidos.map((detalleProducto, index) => (
                       <tr key={index}>
-                        <td>{detalleProducto.producto}</td>
+                        <td>{detalleProducto.producto.nombre}</td>
                         <td>{detalleProducto.cantidad}</td>
                       </tr>
                     ))}
