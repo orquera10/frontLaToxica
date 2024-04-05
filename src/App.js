@@ -11,26 +11,38 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 //Dario Orquera mod
 function App() {
+  const [showModalAgregarProducto, setShowModalAgregarProducto] = useState(false);
 
-  //Traer Productos -----------------------------------
-  const [productos, setProductos] = useState([]);
+  // Agrega un nuevo estado para almacenar los productos disponibles
+  const [productosDisponibles, setProductosDisponibles] = useState([]);
 
-  useEffect(() => {
-    const fetchProductos = async () => {
-      try {
-        const response = await fetch('http://localhost:8081/api/productos');
-        if (!response.ok) {
-          throw new Error('Error al cargar los productos');
-        }
-        const data = await response.json();
-        setProductos(data);
-      } catch (error) {
-        console.error('Error:', error);
+  // Crea un método para cargar los productos disponibles desde tu backend
+  const fetchProductosDisponibles = async () => {
+    try {
+      const response = await fetch('http://localhost:8081/api/productos');
+      if (!response.ok) {
+        throw new Error('Error al cargar los productos disponibles');
       }
-    };
+      const data = await response.json();
+      setProductosDisponibles(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
-    fetchProductos();
+  // Llama a fetchProductosDisponibles en useEffect para cargar los productos al cargar la página
+  useEffect(() => {
+    fetchProductosDisponibles();
   }, []);
+
+  // Crea un estado para almacenar el producto seleccionado
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+
+  // Crea un método para manejar la selección de productos
+  const handleProductoSelect = (producto) => {
+    setProductoSeleccionado(producto);
+  };
+
 
   // Traer Canchas ------------------------------------
   const [canchas, setCanchas] = useState([]);
@@ -147,7 +159,7 @@ function App() {
     setSelectedEvent(arg.event);
     console.log(arg.event);
     setShowModal2(true);
-    fetchEvents();
+
   };
 
   const [events, setEvents] = useState([]);
@@ -221,6 +233,28 @@ function App() {
     } finally {
       // Cerrar el modal de confirmación
       handleCloseModal3();
+    }
+  };
+  // Crea un método para agregar el producto seleccionado al detalle del turno
+  const handleAgregarProducto = async () => {
+    console.log(selectedEvent.id, productoSeleccionado._id);
+    if (!productoSeleccionado) return;
+    try {
+      const response = await fetch(`http://localhost:8081/api/turnos/${selectedEvent.id}/producto/${productoSeleccionado._id}`, {
+        method: 'PUT',
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al agregar el producto al detalle del turno');
+      }
+
+      // Actualiza los eventos después de agregar el producto
+      fetchEvents();
+      console.log("el evento seleccionado:"+selectedEvent);
+      setShowModalAgregarProducto(false);
+      setShowModal2(true);
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
 
@@ -350,7 +384,7 @@ function App() {
                         <td className='text-center'>{detalleProducto.cantidad}</td>
                         <td className='text-center'>{detalleProducto.producto.precio_unitario} $</td>
                         <td className='text-center'>{detalleProducto.producto.precio_unitario * detalleProducto.cantidad} $</td>
-                        <td className='text-center'><Button variant="danger" onClick={console.log("eliminar productos")}>
+                        <td className='text-center'><Button variant="danger" onClick={() => alert("Eliminar producto")}>
                           eliminar
                         </Button></td>
                       </tr>
@@ -358,7 +392,11 @@ function App() {
                   </tbody>
                 </table>
                 <div className="d-flex justify-content-center">
-                  <Button variant="primary"  onClick={console.log("Abrir modal con productos")}>
+                  <Button variant="primary" onClick={
+                    () => {
+                      setShowModalAgregarProducto(true);
+                      setShowModal2(false);
+                    }}>
                     add
                   </Button>
                 </div>
@@ -372,7 +410,29 @@ function App() {
           </Button>
         </Modal.Footer>
       </Modal>
-
+      {/* modal de productos */}
+      <Modal show={showModalAgregarProducto} onHide={() => setShowModalAgregarProducto(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Seleccionar Producto</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <ul>
+            {productosDisponibles.map(producto => (
+              <li key={producto._id} onClick={() => handleProductoSelect(producto)}>
+                {producto.nombre} - {producto.precio_unitario} $
+              </li>
+            ))}
+          </ul>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModalAgregarProducto(false)}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleAgregarProducto}>
+            Agregar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
