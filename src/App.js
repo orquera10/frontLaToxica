@@ -147,6 +147,7 @@ function App() {
     setSelectedEvent(arg.event);
     console.log(arg.event);
     setShowModal2(true);
+    fetchEvents();
   };
 
   const [events, setEvents] = useState([]);
@@ -331,11 +332,14 @@ function App() {
               </div>
               <div>
                 <h4>Productos</h4>
-                <table>
+                <table className='table'>
                   <thead>
                     <tr>
-                      <th>Producto</th>
-                      <th>Cantidad</th>
+                      <th scope="col">Producto</th>
+                      <th scope="col">Cantidad</th>
+                      <th scope="col">Precio Unitario</th>
+                      <th scope="col">Total</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -343,17 +347,27 @@ function App() {
                     {selectedEvent.extendedProps.detalle.productos_consumidos.map((detalleProducto, index) => (
                       <tr key={index}>
                         <td>{detalleProducto.producto.nombre}</td>
-                        <td>{detalleProducto.cantidad}</td>
+                        <td className='text-center'>{detalleProducto.cantidad}</td>
+                        <td className='text-center'>{detalleProducto.producto.precio_unitario} $</td>
+                        <td className='text-center'>{detalleProducto.producto.precio_unitario * detalleProducto.cantidad} $</td>
+                        <td className='text-center'><Button variant="danger" onClick={console.log("eliminar productos")}>
+                          eliminar
+                        </Button></td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
+                <div className="d-flex justify-content-center">
+                  <Button variant="primary"  onClick={console.log("Abrir modal con productos")}>
+                    add
+                  </Button>
+                </div>
               </div>
             </div>
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+          <Button variant="secondary" onClick={() => setShowModal2(false)}>
             Cerrar
           </Button>
         </Modal.Footer>
