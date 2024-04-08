@@ -2,3 +2,22 @@
   padding: 0;
   margin: 0;
 }
+
+/* modal para modificacion de turnos */
+.modalModificar .modal-dialog{
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  max-width: 70vw !important;
+  height: 100% !important;
+}
+
+/* Estilo personalizado para las flechas del carrusel */
+.carousel-control-prev-icon, .carousel-control-next-icon {
+  background-color: black; /* Cambiar el color de fondo de las flechas a negro */
+}
+
+/* Estilo para cambiar el color del borde de las flechas */
+.carousel-control-prev, .carousel-control-next {
+  border-color: black; /* Cambiar el color del borde de las flechas a negro */
+}
