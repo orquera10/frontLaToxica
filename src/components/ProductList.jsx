@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Carousel } from 'react-bootstrap';
-
+import { Card, Row, Col } from 'react-bootstrap';
 
 function ProductList({ handleProductoSelect, setcantidad }) {
     const [productosDisponibles, setProductosDisponibles] = useState([]);
-
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [selectedProductIndex, setSelectedProductIndex] = useState(null);
 
     useEffect(() => {
-        handleProductoSelect(productosDisponibles[activeIndex]);
-    }, [activeIndex, productosDisponibles]);
+        handleProductoSelect(productosDisponibles[selectedProductIndex]);
+    }, [selectedProductIndex, productosDisponibles, handleProductoSelect]);
 
     const fetchProductosDisponibles = async () => {
         try {
@@ -32,34 +30,46 @@ function ProductList({ handleProductoSelect, setcantidad }) {
         setcantidad(Number(event.target.value)); // Actualiza la cantidad seleccionada
     };
 
-    const handleSelect = (selectedIndex, e) => {
-        setActiveIndex(selectedIndex);
-        handleProductoSelect(productosDisponibles[selectedIndex]);
+    const handleProductSelect = (index) => {
+        setSelectedProductIndex(index);
     };
 
     return (
-        <div>
-            <Carousel interval={null} onSelect={handleSelect}>
-                {productosDisponibles.map(producto => (
-                    <Carousel.Item key={producto._id}>
-                        <img
-                            className="d-block w-100"
-                            src={producto.imagenURL || "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg?size=626&ext=jpg&ga=GA1.1.539837299.1711843200&semt=ais"}
-                            alt={producto.nombre}
+        <div className="container">
+            <div className="row">
+                <div className="col-md-12">
+                    <div className="card-container" style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                        <Row xs={1} md={2} lg={3} xl={4} className="g-4">
+                            {productosDisponibles.map((producto, index) => (
+                                <Col key={producto._id}>
+                                    <Card
+                                        className={`mb-3 ${index === selectedProductIndex ? 'border-primary' : ''}`}
+                                        style={{ width: '100%' }}
+                                        onClick={() => handleProductSelect(index)}
+                                    >
+                                        <Card.Img variant="top" src={producto.imagenURL || "https://img.freepik.com/vector-gratis/ilustracion-icono-galeria_53876-27002.jpg?size=626&ext=jpg&ga=GA1.1.539837299.1711843200&semt=ais"} />
+                                        <Card.Body>
+                                            <Card.Title>{producto.nombre}</Card.Title>
+                                            <Card.Text>{producto.detalle}</Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                </Col>
+                            ))}
+                        </Row>
+                    </div>
+                </div>
+            </div>
+            <div className="row">
+                <div className="col-md-12 offset-md-4">
+                    <div className="mt-3">
+                        <input
+                            type="number"
+                            onChange={handleCantidadChange}
+                            placeholder="Cantidad"
                         />
-                        <Carousel.Caption>
-                            <h3 className="text-dark">{producto.nombre}</h3>
-                            <p className="text-dark">{producto.detalle}</p>
-                            <input
-                                type="number"
-                                onChange={handleCantidadChange} // Maneja el cambio de la cantidad seleccionada
-                                placeholder="Cantidad"
-                            />
-                        </Carousel.Caption>
-                    </Carousel.Item>
-                ))}
-            </Carousel>
-
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

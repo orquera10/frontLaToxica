@@ -114,7 +114,7 @@ const ModalModicarEvento = ({ showModal, handleOpenModal, handleCloseModal, sele
                     <Button variant="primary" onClick={handleCloseModal}>
                         Aceptar
                     </Button>
-                    <Button variant="secondary" onClick={handleCloseModal}>
+                    <Button variant="danger" onClick={handleCloseModal}>
                         Cerrar Turno
                     </Button>
                 </Modal.Footer>

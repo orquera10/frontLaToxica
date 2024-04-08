@@ -46,7 +46,7 @@ const ModalProductos = ({ modal, setModal, selectedEvent, fetchEvents, handleOpe
             <Modal show={modal} onHide={() => {
                 setModal(false);
                 handleOpenModal();
-            }}>
+            }} className='modalModificar'>
                 <Modal.Header closeButton>
                     <Modal.Title>Seleccionar Producto</Modal.Title>
                 </Modal.Header>
