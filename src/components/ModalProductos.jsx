@@ -20,7 +20,7 @@ const ModalProductos = ({ modal, setModal, selectedEvent, fetchEvents, handleOpe
         try {
             const quantity = {cantidad:cantidad};
             console.log(quantity);
-            const response = await fetch(`http://localhost:8081/api/turnos/${selectedEvent.id}/producto/${productoSeleccionado._id}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/turnos/${selectedEvent.id}/producto/${productoSeleccionado._id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

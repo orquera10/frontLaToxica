@@ -21,7 +21,7 @@ const EventoCalendario = ({arg, fetchEvents}) => {
     // Función para eliminar el evento
     const handleDeleteEvent = async (eventId) => {
         try {
-            const response = await fetch(`http://localhost:8081/api/turnos/${eventId}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/${eventId}`, {
                 method: 'DELETE',
             });
 

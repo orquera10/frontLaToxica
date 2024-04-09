@@ -20,10 +20,10 @@ function Calendar() {
     const [events, setEvents] = useState([]);
 
     const fetchEvents = async () => {
-        console.log(process.env);
+        
         try {
             
-            const response = await fetch(`${process.env.BACKEND_URL}/api/turnos`);
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/turnos`);
             if (!response.ok) {
                 throw new Error('Error al obtener los eventos');
             }

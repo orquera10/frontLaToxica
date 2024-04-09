@@ -11,7 +11,7 @@ function ProductList({ handleProductoSelect, setcantidad }) {
 
     const fetchProductosDisponibles = async () => {
         try {
-            const response = await fetch('http://localhost:8081/api/productos');
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/productos`);
             if (!response.ok) {
                 throw new Error('Error al cargar los productos disponibles');
             }

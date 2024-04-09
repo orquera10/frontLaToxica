@@ -32,7 +32,7 @@ const ModalAgregarEvento = ({ showModal, handleCloseModal, fetchEvents, selected
     useEffect(() => {
         const fetchCanchas = async () => {
             try {
-                const response = await fetch('http://localhost:8081/api/canchas');
+                const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/canchas`);
                 if (!response.ok) {
                     throw new Error('Error al cargar las canchas');
                 }
@@ -87,7 +87,7 @@ const ModalAgregarEvento = ({ showModal, handleCloseModal, fetchEvents, selected
 
         // Aquí puedes enviar el nuevo evento al backend con fetch
         try {
-            const response = await fetch('http://localhost:8081/api/turnos', {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/turnos`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -22,7 +22,7 @@ const ModalModicarEvento = ({ showModal, handleOpenModal, handleCloseModal, sele
     const handleBorrarProducto = async (id) => {
 
         try {
-            const response = await fetch(`http://localhost:8081/api/turnos/${selectedEvent.id}/producto/${id}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/turnos/${selectedEvent.id}/producto/${id}`, {
                 method: 'DELETE',
             });
 
