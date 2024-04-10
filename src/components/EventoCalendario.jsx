@@ -21,7 +21,7 @@ const EventoCalendario = ({arg, fetchEvents}) => {
     // Función para eliminar el evento
     const handleDeleteEvent = async (eventId) => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/${eventId}`, {
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/eventos/${eventId}`, {
                 method: 'DELETE',
             });
 
