@@ -21,3 +21,17 @@
 .carousel-control-prev, .carousel-control-next {
   border-color: black; /* Cambiar el color del borde de las flechas a negro */
 }
+
+.contenedorLogin{
+  height: 100vh;
+}
+
+.contenedorInputs{
+  background-color: #4E9BE1;
+}
+
+.contenedorImagen {
+  background-image: url('https://s.france24.com/media/display/1da38e12-192f-11eb-96f6-005056bff430/w:980/p:16x9/0991248cb87a04613c2ec99252bcb45a4762b0ad.jpg');
+  background-size: cover; /* Para ajustar la imagen al tamaño del div */
+  background-position: center; /* Para centrar la imagen en el div */
+}
