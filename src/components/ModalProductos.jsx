@@ -19,7 +19,6 @@ const ModalProductos = ({ modal, setModal, selectedEvent, fetchEvents, handleOpe
         if (!productoSeleccionado) return;
         try {
             const quantity = {cantidad:cantidad};
-            console.log(quantity);
             const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/turnos/${selectedEvent.id}/producto/${productoSeleccionado._id}`, {
                 method: 'PUT',
                 headers: {
