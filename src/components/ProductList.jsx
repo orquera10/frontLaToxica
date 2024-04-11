@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
 
-function ProductList({ handleProductoSelect, setcantidad }) {
+function ProductList({ handleProductoSelect, setcantidad, cantidad }) {
     const [productosDisponibles, setProductosDisponibles] = useState([]);
     const [selectedProductIndex, setSelectedProductIndex] = useState(null);
 
@@ -60,12 +60,16 @@ function ProductList({ handleProductoSelect, setcantidad }) {
                 </div>
             </div>
             <div className="row">
-                <div className="col-md-12 offset-md-4">
-                    <div className="mt-3">
+                <div className="">
+
+                    <div className="mt-3 d-flex align-items-center justify-content-center">
+                        <p className='m-0 p-0 h5'>Cantidad</p>
                         <input
                             type="number"
+                            value={cantidad}
                             onChange={handleCantidadChange}
                             placeholder="Cantidad"
+                            className='mx-3 p-1 text-center w-25'
                         />
                     </div>
                 </div>

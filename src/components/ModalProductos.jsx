@@ -50,7 +50,7 @@ const ModalProductos = ({ modal, setModal, selectedEvent, fetchEvents, handleOpe
                     <Modal.Title>Seleccionar Producto</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <ProductList handleProductoSelect={handleProductoSelect} setcantidad={setcantidad}/>
+                    <ProductList handleProductoSelect={handleProductoSelect} setcantidad={setcantidad} cantidad={cantidad} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => {
