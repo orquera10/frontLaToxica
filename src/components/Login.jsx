@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -38,15 +39,20 @@ const Login = () => {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className="my-5">
-              Ingresar
-            </Button>
+            <Link
+              to={"/calendar"}
+              variant="primary"
+              type="submit"
+              title="Ingresar"
+            >
+              <Button variant="primary" type="submit" className="my-5">
+                Ingresar
+              </Button>
+            </Link>
           </Form>
         </Container>
       </div>
-      <div className="col-8 contenedorImagen">
-
-      </div>
+      <div className="col-8 contenedorImagen"></div>
     </div>
   );
 };
