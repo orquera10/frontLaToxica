@@ -1,18 +1,19 @@
-import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import Calendar from './components/Calendar';
-import Login from './components/Login'; // Asumiendo que tienes un componente Login
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Calendar from "./components/Calendar";
+import Login from "./components/Login"; // Asumiendo que tienes un componente Login
 
 function App() {
-    return (
-        <div className="App">
-            <Router>
-                <Route path="/" exact component={Calendar} />
-                <Route path="/login" component={Login} />
-            </Router>
-        </div>
-    );
+  return (
+    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          <Route path={"/calendar"} element={<Calendar/>} />
+          <Route path={"/"} element={<Login/>} />
+        </Routes>
+      </BrowserRouter>
+    </div>
+  );
 }
 
 export default App;
-
